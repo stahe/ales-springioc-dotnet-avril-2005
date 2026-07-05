@@ -1,0 +1,855 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spring IoC para .NET">
+      
+      
+        <meta name="author" content="Serge Tahé">
+      
+      
+        <link rel="canonical" href="https://stahe.github.io/ales-springioc-dotnet-avril-2005/configurar-una-aplicacion-con-spring.html">
+      
+      
+        <link rel="prev" href="introduccion.html">
+      
+      
+        <link rel="next" href="inversion-de-control-ioc.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>2. Configurar una aplicación con Spring - Spring IoC para .NET</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/focus.css">
+    
+      <link rel="stylesheet" href="stylesheets/bidi.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBZC3JVJNR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var siteName = "Spring IoC para .NET";
+    gtag('config', 'G-EBZC3JVJNR', {
+        'page_title': siteName
+    });
+  </script>
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#2-configurar-una-aplicacion-con-spring" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Spring IoC para .NET" class="md-header__button md-logo" aria-label="Spring IoC para .NET" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Spring IoC para .NET
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2. Configurar una aplicación con Spring
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="purple"  aria-label="Cambiar al modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar al modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="purple"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://stahe.github.io/ales-springioc-dotnet-avril-2005" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Spring IoC para .NET" class="md-nav__button md-logo" aria-label="Spring IoC para .NET" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Spring IoC para .NET
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://stahe.github.io/ales-springioc-dotnet-avril-2005" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bienvenidos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduccion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introducción
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="configurar-una-aplicacion-con-spring.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Configurar una aplicación con Spring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="inversion-de-control-ioc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Inversión de control IoC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="inyeccion-de-dependencias.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Inyección de dependencias
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="spring-ioc-en-la-practica.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Spring IoC en la práctica
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="spring-para-configurar-aplicaciones-de-tres-capas.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Spring para configurar aplicaciones de tres capas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="una-solucion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Una solución
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="anexos.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Anexos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="2-configurar-una-aplicacion-con-spring">2. <span style="color: #365f91">Configurar una aplicación con Spring</span></h1>
+<p>Consideremos una aplicación clásica de tres capas:</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left;"><img src="images/10000000000006EA000001322F08DDC2.png" width="680" height="118" style="display:inline-block; margin:4px;width:17.997cm;height:3.11cm;" class="odt-zoomable" data-zoom-src="images/10000000000006EA000001322F08DDC2.png" /></td></tr></table>
+
+<p>Supondremos que el acceso a la capa DAO está controlado por una interfaz [IArticlesDao]:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">....</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">Namespace</span><span class="w"> </span><span class="nn">istia.st.articles.dao</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="k">Public</span><span class="w"> </span><span class="k">Interface</span><span class="w"> </span><span class="n">IArticlesDao</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">         </span><span class="c">&#39; lista de todos los artículos</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="k">Function</span><span class="w"> </span><span class="nf">getAllArticles</span><span class="p">()</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">IList</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">         </span><span class="c">&#39; agrega un artículo</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="k">Function</span><span class="w"> </span><span class="nf">ajouteArticle</span><span class="p">(</span><span class="k">ByVal</span><span class="w"> </span><span class="n">unArticle</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">Article</span><span class="p">)</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">         </span><span class="c">&#39; elimina un artículo</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="k">Function</span><span class="w"> </span><span class="nf">supprimeArticle</span><span class="p">(</span><span class="k">ByVal</span><span class="w"> </span><span class="n">idArticle</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">         </span><span class="c">&#39; modifica un artículo</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="k">Function</span><span class="w"> </span><span class="nf">modifieArticle</span><span class="p">(</span><span class="k">ByVal</span><span class="w"> </span><span class="n">unArticle</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">Article</span><span class="p">)</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">         </span><span class="c">&#39; busca un artículo</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="k">Function</span><span class="w"> </span><span class="nf">getArticleById</span><span class="p">(</span><span class="k">ByVal</span><span class="w"> </span><span class="n">idArticle</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">Article</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">         </span><span class="c">&#39; elimina todos los artículos</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">        </span><span class="k">Sub</span><span class="w"> </span><span class="nf">clearAllArticles</span><span class="p">()</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">         </span><span class="c">&#39; inserta artículos en una transacción</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">        </span><span class="k">Sub</span><span class="w"> </span><span class="nf">doInsertionsInTransaction</span><span class="p">(</span><span class="k">ByVal</span><span class="w"> </span><span class="n">articles</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">Article</span><span class="p">())</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">         </span><span class="c">&#39; modifica el inventario de un artículo</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">        </span><span class="k">Function</span><span class="w"> </span><span class="nf">changerStockArticle</span><span class="p">(</span><span class="k">ByVal</span><span class="w"> </span><span class="n">idArticle</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span><span class="p">,</span><span class="w"> </span><span class="k">ByVal</span><span class="w"> </span><span class="n">mouvement</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span><span class="p">)</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Interface</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="k">End</span><span class="w"> </span><span class="k">Namespace</span>
+</code></pre></div>
+<p>En la capa de acceso a datos o capa DAO (Data Access Object), es común trabajar con un SGBD. Consideremos el caso en el que se accede a este a través de un controlador ODBC. El esqueleto de una clase que acceda a esta fuente ODBC podría ser el siguiente:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">NameSpace</span><span class="w"> </span><span class="nn">istia.st.articles.dao</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">System.Data.Odbc</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">...</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="k">Public</span><span class="w"> </span><span class="k">Class</span><span class="w"> </span><span class="nc">ArticlesDaoPlainODBC</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="k">Implements</span><span class="w"> </span><span class="n">istia</span><span class="p">.</span><span class="n">st</span><span class="p">.</span><span class="n">articles</span><span class="p">.</span><span class="n">dao</span><span class="p">.</span><span class="n">IArticlesDao</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">         </span><span class="c">&#39; campos privados</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="k">Private</span><span class="w"> </span><span class="n">connexion</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">OdbcConnection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">Nothing</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="k">Private</span><span class="w"> </span><span class="n">DSN</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="k">Public</span><span class="w"> </span><span class="k">Sub</span><span class="w"> </span><span class="nf">New</span><span class="p">(</span><span class="k">ByVal</span><span class="w"> </span><span class="n">DSN</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="k">ByVal</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="k">ByVal</span><span class="w"> </span><span class="n">passwd</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span><span class="p">)</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">             </span><span class="c">&#39;recupera el nombre de la fuente ODBC</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">            </span><span class="k">Me</span><span class="p">.</span><span class="n">DSN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DSN</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">             </span><span class="c">&#39; se crea la cadena de conexión</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">            </span><span class="k">Dim</span><span class="w"> </span><span class="n">connectString</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">String</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;DSN={0};UID={1};PWD={2}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DSN</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="n">passwd</span><span class="p">)</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">             </span><span class="c">&#39;se instancia la conexión</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">            </span><span class="n">connexion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">New</span><span class="w"> </span><span class="n">OdbcConnection</span><span class="p">(</span><span class="n">connectString</span><span class="p">)</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="p">....</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Class</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="k">End</span><span class="w"> </span><span class="k">NameSpace</span>
+</code></pre></div>
+<p>Para realizar una operación en la fuente ODBC, cualquier método necesita un objeto [OdbcConnection] que represente la conexión a la base de datos a través de la cual transitarán los intercambios entre esta y la aplicación. Para crear este objeto, se necesitan tres datos:</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>DSN As String
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left;"><div style="margin:0 0 0.5em 0">el nombre de la fuente ODBC</div></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>user As String
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left;"><div style="margin:0 0 0.5em 0">la identidad con la que se crea la conexión</div></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>passwd As String
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left;"><div style="margin:0 0 0.5em 0">la contraseña asociada a esta identidad</div></td></tr></table>
+
+<p>Nuestra clase [ArticlesDaoPlainODBC] obtiene esta información a través del agente externo que instancia un miembro de la clase. Cabe preguntarse cómo este agente obtiene los tres datos necesarios para instanciar la clase [ArticlesDaoPlainODBC]. Veamos un ejemplo. Supongamos que queremos escribir una clase de prueba de la capa [Dao]. Tendríamos la siguiente arquitectura:</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left;"><img src="images/100000000000055B000000C7F7381DD1.png" width="680" height="99" style="display:inline-block; margin:4px;width:17.997cm;height:2.612cm;" class="odt-zoomable" data-zoom-src="images/100000000000055B000000C7F7381DD1.png" /></td></tr></table>
+
+<p>El esqueleto de una clase de prueba de Nunit [http://www.nunit.org/] podría ser el siguiente:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">System</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">System.Collections</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">NUnit.Framework</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">istia.st.articles.dao</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">ArticlesDaoSqlmap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">istia</span><span class="p">.</span><span class="n">st</span><span class="p">.</span><span class="n">articles</span><span class="p">.</span><span class="n">dao</span><span class="p">.</span><span class="n">ArticlesDaoSqlMap</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">Article</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">istia</span><span class="p">.</span><span class="n">st</span><span class="p">.</span><span class="n">articles</span><span class="p">.</span><span class="n">domain</span><span class="p">.</span><span class="n">Article</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">System.Threading</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="o">&lt;</span><span class="n">TestFixture</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span>_
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="k">Public</span><span class="w"> </span><span class="k">Class</span><span class="w"> </span><span class="nc">NunitTestArticlesDaoPlainOdbc</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">         </span><span class="c">&#39; el objeto a probar</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="k">Private</span><span class="w"> </span><span class="n">articlesDao</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">IArticlesDao</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">        </span><span class="o">&lt;</span><span class="n">SetUp</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span>_
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">        </span><span class="k">Public</span><span class="w"> </span><span class="k">Sub</span><span class="w"> </span><span class="nf">init</span><span class="p">()</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">             </span><span class="c">&#39; se crea una instancia del objeto a probar</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">            </span><span class="n">articlesDao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">New</span><span class="w"> </span><span class="n">ArticlesDaoPlainODBC</span><span class="p">(</span><span class="s">&quot;odbc-firebird-articles&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SYSDBA&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;masterkey&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">        </span><span class="o">&lt;</span><span class="n">Test</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span>_
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">        </span><span class="k">Public</span><span class="w"> </span><span class="k">Sub</span><span class="w"> </span><span class="nf">testGetAllArticles</span><span class="p">()</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">             </span><span class="c">&#39; verificación visual</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">            </span><span class="n">listArticles</span><span class="p">()</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">         </span><span class="c">&#39; captura de pantalla</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="w">        </span><span class="k">Private</span><span class="w"> </span><span class="k">Sub</span><span class="w"> </span><span class="nf">listArticles</span><span class="p">()</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="w">            </span><span class="k">Dim</span><span class="w"> </span><span class="n">articles</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">IList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">articlesDao</span><span class="p">.</span><span class="n">getAllArticles</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">            </span><span class="k">For</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">To</span><span class="w"> </span><span class="n">articles</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="k">CType</span><span class="p">(</span><span class="n">articles</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">Article</span><span class="p">).</span><span class="n">ToString</span><span class="p">)</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">            </span><span class="k">Next</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Class</span>
+</code></pre></div>
+<p>El entorno de pruebas Nunit es una adaptación a la plataforma .NET del entorno JUnit que existe para la plataforma Java. En la clase anterior, el método que tiene el atributo &lt;SetUp()&gt; se ejecuta antes de cada método de prueba. El que tiene el atributo &lt;TearDown()&gt;, por su parte, se ejecuta después de cada prueba. No hay ninguno en el ejemplo anterior. Aquí vemos que el método [init], que tiene el atributo &lt;SetUp()&gt;, instancia un objeto [ArticlesDaoPlainODBC] pasándole de forma «estática» los tres datos que necesita el constructor de ese objeto.</p>
+<p>Nuestra clase de prueba queda a merced de cualquier cambio en uno de los datos codificados de forma estática. Sería preferible que estos se registraran en un archivo de configuración, para evitar recompilaciones innecesarias cuando cambien. La solución habitual para configurar una aplicación es utilizar un archivo donde se recojan todos los datos que puedan cambiar con el tiempo. Existe una gran variedad de archivos de configuración. La tendencia actual es utilizar archivos XML. Esta es la opción elegida por Spring. El archivo que configura un objeto [ArticlesDaoPlainODBC] podría ser el siguiente:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; ?&gt;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="cp">&lt;!DOCTYPE objects PUBLIC &quot;-//SPRING//DTD OBJECT//EN&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="cp">&quot;http://www.springframework.net/dtd/spring-objects.dtd&quot;&gt;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nt">&lt;objects&gt;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">     </span><span class="cm">&lt;!-- la clase de implementación de la interfaz IArticlesDao --&gt;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">&lt;description&gt;</span>Gestion<span class="w"> </span>d&#39;une<span class="w"> </span>table<span class="w"> </span>d&#39;articles<span class="nt">&lt;/description&gt;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">&lt;object</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;articlesdao&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;istia.st.articles.dao.ArticlesDaoPlainODBC, articlesdao&quot;</span><span class="nt">&gt;</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="nt">&lt;constructor-arg</span><span class="w"> </span><span class="na">index=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">            </span><span class="nt">&lt;value&gt;</span>odbc-firebird-articles<span class="nt">&lt;/value&gt;</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="nt">&lt;/constructor-arg&gt;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">         </span><span class="nt">&lt;constructor-arg</span><span class="w"> </span><span class="na">index=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">            </span><span class="nt">&lt;value&gt;</span>SYSDBA<span class="nt">&lt;/value&gt;</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">        </span><span class="nt">&lt;/constructor-arg&gt;</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">         </span><span class="nt">&lt;constructor-arg</span><span class="w"> </span><span class="na">index=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">            </span><span class="nt">&lt;value&gt;</span>masterkey<span class="nt">&lt;/value&gt;</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">        </span><span class="nt">&lt;/constructor-arg&gt;</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="nt">&lt;/object&gt;</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="nt">&lt;/objects&gt;</span>
+</code></pre></div>
+<p>El archivo de configuración de Spring describe los objetos que se deben instanciar. Por lo general, no especifica cuándo se instanciarán. El momento de su instanciación lo decide, entonces, el código que utiliza este archivo. Los objetos descritos en un archivo de configuración de Spring pueden instanciarse e inicializarse de dos maneras diferentes:</p>
+<ul>
+<li>indicando, como se mostró anteriormente, los parámetros que se deben pasar al constructor del objeto</li>
+<li>asignando valores a las propiedades del objeto (Property). En este caso, el objeto debe contar con un constructor por defecto que Spring utilizará para la instanciación.</li>
+</ul>
+<p>Los objetos que, en una aplicación, tienen la función de prestar un servicio, a menudo se crean en una sola instancia. Se les llama <strong>singletons</strong>. Así, en nuestro ejemplo de aplicación de múltiples capas presentado al inicio de este documento, el acceso a la base de datos de artículos estará a cargo de una única instancia de la clase [ArticlesDaoPlainODBC]. En una aplicación web, estos objetos de servicio atienden a varios clientes al mismo tiempo. No se crea un objeto de servicio por cada cliente.</p>
+<p>El archivo de configuración de Spring anterior permite crear un único objeto <strong>de servicio</strong> de tipo [ArticlesDaoPlainODBC] en un paquete llamado [istia.st.articles.dao]. Los tres datos necesarios para el constructor de este objeto se definen dentro de una etiqueta <strong>&lt;object&gt;...&lt;/object&gt;</strong>. Habrá tantas etiquetas <strong>&lt;object&gt;</strong> como singletons se deban construir.</p>
+<p>Detallamos la configuración:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&lt;objects&gt;
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>...
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>&lt;/objects&gt;
+</code></pre></div>
+<p><strong>&lt;objects&gt;</strong> es la etiqueta raíz de un archivo de configuración de Spring. Indica la descripción de los objetos singleton que se deben instanciar.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>    &lt;description&gt;Gestion d&#39;une table d&#39;articles&lt;/description&gt;
+</code></pre></div>
+<p>La etiqueta <strong>&lt;description&gt;</strong> es opcional. Se puede utilizar, por ejemplo, para describir la función del archivo de configuración.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&lt;object id=&quot;articlesdao&quot; type=&quot;istia.st.articles.dao.ArticlesDaoPlainODBC, articlesdao&quot;&gt;
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>...    
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>&lt;/object&gt;
+</code></pre></div>
+<p>La etiqueta <strong>&lt;object&gt;</strong> sirve para describir un objeto que se va a instanciar. Aquí tiene dos atributos:</p>
+<ul>
+<li><strong>name</strong>: identificador del objeto. Es a través de este nombre que el código externo hará referencia al objeto.</li>
+<li><strong>class</strong>: tiene el formato «nombre de clase, nombre de ensamblaje». La primera información es el nombre completo de la clase que se va a instanciar. La segunda, el nombre del DLL que contiene dicha clase. En nuestro ejemplo, la clase se encuentra en un archivo llamado [articlesdao.dll]</li>
+</ul>
+<p>El contenido de la etiqueta <strong>&lt;object&gt;</strong> sirve para describir el modo de instanciación del objeto:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="w">    </span><span class="o">&lt;</span><span class="nx">object</span><span class="w"> </span><span class="nx">id</span><span class="o">=</span><span class="s2">&quot;articlesdao&quot;</span><span class="w"> </span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;istia.st.articles.dao.ArticlesDaoPlainODBC, articlesdao&quot;</span><span class="o">&gt;</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">      </span><span class="o">&lt;</span><span class="kr">constructor</span><span class="o">-</span><span class="nx">arg</span><span class="w"> </span><span class="nx">index</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="o">&gt;</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">            </span><span class="o">&lt;</span><span class="nx">value</span><span class="o">&gt;</span><span class="nx">odbc</span><span class="o">-</span><span class="nx">firebird</span><span class="o">-</span><span class="nx">articles</span><span class="o">&lt;</span><span class="err">/value&gt;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">        </span><span class="o">&lt;</span><span class="err">/constructor-arg&gt;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">         </span><span class="o">&lt;</span><span class="kr">constructor</span><span class="o">-</span><span class="nx">arg</span><span class="w"> </span><span class="nx">index</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="o">&gt;</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">            </span><span class="o">&lt;</span><span class="nx">value</span><span class="o">&gt;</span><span class="nx">SYSDBA</span><span class="o">&lt;</span><span class="err">/value&gt;</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">        </span><span class="o">&lt;</span><span class="err">/constructor-arg&gt;</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">         </span><span class="o">&lt;</span><span class="kr">constructor</span><span class="o">-</span><span class="nx">arg</span><span class="w"> </span><span class="nx">index</span><span class="o">=</span><span class="s2">&quot;2&quot;</span><span class="o">&gt;</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">            </span><span class="o">&lt;</span><span class="nx">value</span><span class="o">&gt;</span><span class="nx">masterkey</span><span class="o">&lt;</span><span class="err">/value&gt;</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="o">&lt;</span><span class="err">/constructor-arg&gt;</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="o">&lt;</span><span class="err">/object&gt;</span>
+</code></pre></div>
+<p>Recordemos la firma del fabricante de la clase [ArticlesDaoPlainODBC]:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="w">        </span><span class="k">Public</span><span class="w"> </span><span class="k">Sub</span><span class="w"> </span><span class="nf">New</span><span class="p">(</span><span class="k">ByVal</span><span class="w"> </span><span class="n">DSN</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="k">ByVal</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="k">ByVal</span><span class="w"> </span><span class="n">passwd</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">String</span><span class="p">)</span>
+</code></pre></div>
+<p>El objeto Spring [articlesdao] será instanciado por el constructor anterior con los tres datos del archivo de configuración: [odbc-firebird-articles, SYSDBA, masterkey].</p>
+<p>¿En qué momento se llevará a cabo la creación de los objetos definidos en el archivo de Spring? En toda aplicación hay un método que, sin duda, será el primero en ejecutarse. Por lo general, es en este donde se solicita la creación de los singletons. La inicialización de una aplicación puede recaer en el método <strong>main</strong> de esa misma aplicación, si es que cuenta con uno. Para una aplicación ASP.NET, podría ser el método [Application_Start] del archivo [global.asax]. Para nuestra clase de prueba [Nunit], la inicialización de la aplicación se lleva a cabo en el método asociado al atributo <strong>&lt;Setup()&gt;</strong>.  </p>
+<p>¿Cómo utilizar el archivo de configuración anterior en nuestra clase [Nunit]? A continuación, un ejemplo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">System</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">System.Collections</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">NUnit.Framework</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">istia.st.articles.dao</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">ArticlesDaoSqlmap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">istia</span><span class="p">.</span><span class="n">st</span><span class="p">.</span><span class="n">articles</span><span class="p">.</span><span class="n">dao</span><span class="p">.</span><span class="n">ArticlesDaoSqlMap</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">Article</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">istia</span><span class="p">.</span><span class="n">st</span><span class="p">.</span><span class="n">articles</span><span class="p">.</span><span class="n">domain</span><span class="p">.</span><span class="n">Article</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">System.Threading</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">Spring.Objects.Factory.Xml</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">System.IO</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">    </span><span class="o">&lt;</span><span class="n">TestFixture</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span>_
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">    </span><span class="k">Public</span><span class="w"> </span><span class="k">Class</span><span class="w"> </span><span class="nc">NunitSpringTestArticlesDaoPlainOdbc</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="w">         </span><span class="c">&#39; el objeto a probar</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">        </span><span class="k">Private</span><span class="w"> </span><span class="n">articlesDao</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">IArticlesDao</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">        </span><span class="o">&lt;</span><span class="n">SetUp</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span>_
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="w">        </span><span class="k">Public</span><span class="w"> </span><span class="k">Sub</span><span class="w"> </span><span class="nf">init</span><span class="p">()</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">       </span><span class="c">&#39; se obtiene una instancia del generador de objetos de Spring</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="w">            </span><span class="k">Dim</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">XmlObjectFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">New</span><span class="w"> </span><span class="n">XmlObjectFactory</span><span class="p">(</span><span class="k">New</span><span class="w"> </span><span class="n">FileStream</span><span class="p">(</span><span class="s">&quot;spring-config-plainodbc.xml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">FileMode</span><span class="p">.</span><span class="n">Open</span><span class="p">))</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">       </span><span class="c">&#39; se solicita la instanciación del objeto DAO de artículos</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">            </span><span class="n">articlesDao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">CType</span><span class="p">(</span><span class="n">factory</span><span class="p">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;articlesdao&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">IArticlesDao</span><span class="p">)</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="w">        </span><span class="o">&lt;</span><span class="n">Test</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span>_
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="w">        </span><span class="k">Public</span><span class="w"> </span><span class="k">Sub</span><span class="w"> </span><span class="nf">testGetAllArticles</span><span class="p">()</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">             </span><span class="c">&#39; verificación visual</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="w">            </span><span class="n">listArticles</span><span class="p">()</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a><span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="w">         </span><span class="c">&#39; captura de pantalla</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a><span class="w">        </span><span class="k">Private</span><span class="w"> </span><span class="k">Sub</span><span class="w"> </span><span class="nf">listArticles</span><span class="p">()</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a><span class="w">            </span><span class="k">Dim</span><span class="w"> </span><span class="n">articles</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">IList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">articlesDao</span><span class="p">.</span><span class="n">getAllArticles</span>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="w">            </span><span class="k">For</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="kt">Integer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">To</span><span class="w"> </span><span class="n">articles</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="k">CType</span><span class="p">(</span><span class="n">articles</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">Article</span><span class="p">).</span><span class="n">ToString</span><span class="p">)</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a><span class="w">            </span><span class="k">Next</span>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="w">    </span><span class="k">End</span><span class="w"> </span><span class="k">Class</span>
+</code></pre></div>
+<p><strong>Comentarios</strong>:</p>
+<ul>
+<li>Para instanciar los objetos del archivo de configuración de Spring, se utiliza un objeto de tipo [XmlObjectFactory]. Se trata de un objeto de tipo «Factory», c.a.d, es decir, un objeto que sirve para crear otros objetos (Factory = fábrica). Spring cuenta con varios tipos de «Factory» según el archivo de configuración que se utilice. En este caso, se trata de un archivo XML, por lo que se utiliza un tipo [XmlObjectFactory].</li>
+<li>De manera bastante lógica, un objeto de tipo [XmlObjectFactory] necesita el nombre del archivo de configuración XML, en este caso [spring-config-plainodbc.xml]. Más precisamente, el tipo [XmlObjectFactory] se instancia con un flujo de lectura creado a partir del archivo XML, cuyo nombre se especifica.</li>
+<li>Una vez creado el objeto de tipo [XmlObjectFactory], se obtiene un objeto del archivo de configuración mediante <strong>[XmlObjectFactory].getObject(&quot;identificador&quot;),</strong> donde &quot;identificador&quot; es el atributo [id] de uno de los objetos del archivo de configuración.</li>
+<li>Si el objeto solicitado aún no ha sido instanciado, Spring lo instancia utilizando la información de su archivo de configuración y devuelve una referencia al programa que lo llama. Si el objeto ya ha sido instanciado, Spring simplemente devuelve la referencia del objeto ya existente. Este es el principio del singleton.</li>
+<li>Cabe señalar que la clase de prueba [Nunit] no conoce el nombre de la clase de acceso a datos. Este nombre se encuentra en el archivo de configuración. La clase de prueba simplemente solicita un objeto que implemente la interfaz [IArticlesDao]:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="w">         </span><span class="c">&#39; el objeto a probar</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">        </span><span class="k">Private</span><span class="w"> </span><span class="n">articlesDao</span><span class="w"> </span><span class="ow">As</span><span class="w"> </span><span class="n">IArticlesDao</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">        </span><span class="o">&lt;</span><span class="n">SetUp</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span>_
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">        </span><span class="k">Public</span><span class="w"> </span><span class="k">Sub</span><span class="w"> </span><span class="nf">init</span><span class="p">()</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="p">...</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">            </span><span class="n">articlesDao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">CType</span><span class="p">(</span><span class="n">factory</span><span class="p">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;articlesdao&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">IArticlesDao</span><span class="p">)</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">        </span><span class="k">End</span><span class="w"> </span><span class="k">Sub</span>
+</code></pre></div>
+<p>Ahí radica todo el interés de Spring. Si cambiamos la clase de implementación, no será necesario modificar nuestra clase de prueba. Simplemente modificaremos el archivo de configuración de Spring. La clase de prueba, por su parte, se limita a trabajar con una interfaz y no con una clase.</p>
+<p>Terminemos esta presentación con algunos puntos prácticos.</p>
+<p>Cuando escribimos «Spring va a instanciar...», ¿qué queremos decir exactamente? Para la plataforma .NET, Spring se encuentra en tres archivos:</p>
+<p><img src="images/10000000000001460000004E5F4351A0.png" width="326" height="78" style="width:8.624cm;height:2.064cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001460000004E5F4351A0.png" /></p>
+<p>Para un proyecto .NET creado con Visual Studio y que deba utilizar Spring, se procederá de la siguiente manera: </p>
+<ul>
+<li>los tres archivos mencionados anteriormente se colocarán en la carpeta [bin] del proyecto</li>
+<li>[Spring.Core.dll] debe formar parte de las referencias del proyecto:</li>
+</ul>
+<p><img src="images/10000000000000970000006133FAC914.png" width="151" height="97" style="width:3.993cm;height:2.565cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000970000006133FAC914.png" /></p>
+<ul>
+<li>las clases que utilizan Spring deberán importar ciertos espacios de nombres, entre los que suele encontrarse el siguiente:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">Imports</span><span class="w"> </span><span class="nn">Spring.Objects.Factory.Xml</span>
+</code></pre></div>
+<p>Otro punto práctico: ¿dónde se coloca el archivo de configuración de Spring? Hay varias ubicaciones posibles. Una de ellas es la carpeta [bin] del proyecto. Ahí es donde se colocó el archivo [spring-config-plainodbc.xml] del ejemplo analizado.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner">
+
+      <div>
+        <a href="https://stahe.github.io" target="_blank">
+          https://stahe.github.io
+        </a>
+        <br>
+        Este tutorial, escrito por <strong>Serge Tahé</strong>, se pone a disposición del público de acuerdo con los términos de la
+        <em>Creative Commons Reconocimiento – Sin uso comercial –
+        Compartir igual 3.0 Inalterado</em>.
+
+      </div>
+
+    </div>
+  </div>
+
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.indexes", "navigation.expand", "toc.integrate", "navigation.top"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="javascripts/focus.js"></script>
+      
+    
+  </body>
+</html>
